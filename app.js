@@ -1,8 +1,9 @@
 var stars = ["lebron james", "kobe bryant", "neymar jr", "cristiano ronaldo", "odell beckham", "yuna kim", "ken block"];
 
+
 function buttonGenerator() {
 
-    for (var i=0; i<stars.length; i++) {
+    for (i = 0; i<stars.length; i++) {
         var button = $("<button>");
         button.text(stars[i]);
         button.addClass("button");
@@ -12,12 +13,12 @@ function buttonGenerator() {
 
 }
 
-$(".button").on("click", function() {
+$(document.body).on("click", ".button", function() {
+    $("#gifs").empty();    
 
     var star = $(this).attr("data-value");
 
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-    star + "&api_key=YPb4gbszuqY25hsotltsHCsfa4vO8Xwi&limit=10";
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + star + "&api_key=YPb4gbszuqY25hsotltsHCsfa4vO8Xwi&limit=10";
 
     $.ajax({
         url: queryURL,
@@ -28,14 +29,15 @@ $(".button").on("click", function() {
 
             for (var j=0; j<results.length; j++) {
                 var starDiv = $("<div>");
+                starDiv.addClass("inline");
 
                 var image = $("<img>");
-                image.attr("src", results[i].images.fixed_height_small_still.url);
-                image.attr("data-still", results[i].images.fixed_height_small_still.url);
-                image.attr("data-animate", results[i].images.fixed_height_small.url);
+                image.attr("src", results[j].images.fixed_height_small_still.url);
+                image.attr("data-still", results[j].images.fixed_height_small_still.url);
+                image.attr("data-animate", results[j].images.fixed_height_small.url);
                 image.attr("data-state", "still");
 
-                var rating = $("<p>").text("Ratings: " + results[i].rating);
+                var rating = $("<p>").text("Ratings: " + results[j].rating);
 
                 starDiv.append(image);
                 starDiv.append(rating);
@@ -45,7 +47,7 @@ $(".button").on("click", function() {
         });
 });
 
-$("img").on("click", function() {
+$(document.body).on("click", "img", function() {
     var state = $(this).attr("data-state");
 
     if (state === "still") {
@@ -57,11 +59,15 @@ $("img").on("click", function() {
       }
 });
 
-$("#submit").on("click", function() {
+$("#submit").on("click", function(event) {
+
+    event.preventDefault();
     $("#buttons").empty();
     var entry = $("#new-button").val().trim();
+    console.log(entry);
     stars.push(entry);
     buttonGenerator();
+    $("#new-button").val("");
 });
 
 buttonGenerator();
