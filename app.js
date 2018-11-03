@@ -18,7 +18,7 @@ $(document.body).on("click", ".button", function() {
 
     var star = $(this).attr("data-value");
 
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + star + "&api_key=YPb4gbszuqY25hsotltsHCsfa4vO8Xwi&limit=10";
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + star + "&api_key=YPb4gbszuqY25hsotltsHCsfa4vO8Xwi&limit=40";
 
     $.ajax({
         url: queryURL,
@@ -60,13 +60,15 @@ $(document.body).on("click", "img", function() {
 });
 
 $("#submit").on("click", function(event) {
-
+    // Prevent the page from refreshing
     event.preventDefault();
+
     $("#buttons").empty();
     var entry = $("#new-button").val().trim();
-    console.log(entry);
     stars.push(entry);
+
     buttonGenerator();
+
     $("#new-button").val("");
 });
 
